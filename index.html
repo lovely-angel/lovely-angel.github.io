@@ -6,6 +6,10 @@
     <title>for my lovely angel, vartika</title>
 
     <link
+      href="https://fonts.googleapis.com/css?family=Allura&display=swap"
+      rel="stylesheet"
+    />
+    <link
       rel="apple-touch-icon"
       sizes="180x180"
       href="/assets/apple-touch-icon-gJomi9tj.png"
@@ -41,6 +45,9 @@
         height: 100%;
         background-image: url("/assets/wallpaper-Jyr8FlIW.jpg");
         background-size: contain;
+        body {
+          font-family: "Allura";
+        }
       }
 
       canvas {
@@ -74,12 +81,36 @@
         width: 100vw;
         height: 100vh;
         z-index: 0;
+        text-align: center;
+        font-size: larger;
+      }
+
+      #text {
+        z-index: -1;
+      }
+
+      #text span {
+        display: block;
       }
     </style>
     <script type="module" crossorigin src="/assets/index-jW8M09MK.js"></script>
   </head>
   <body>
     <div id="custom-cursor"></div>
-    <div id="center"></div>
+    <div id="center">
+      <h1 id="text">
+        <span>“I long for you;</span>
+        <span>I who usually long without longing, </span>
+        <span> as though I am unconscious </span>
+        <span>and absorbed in neutrality and apathy,</span>
+        <span>really, utterly long for every bit of you."</span>
+        <span>-franz kafka</span>
+        <br />
+        <span>i will find you in every lifetime</span>
+        <span>happy birthday, vartika</span>
+        <span>from phi</span>
+      </h1>
+      <h1 id="text"></h1>
+    </div>
   </body>
 </html>
