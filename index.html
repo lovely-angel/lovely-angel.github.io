@@ -87,23 +87,37 @@
         font-size: larger;
       }
 
-      @media (max-width: 768px) {
-        #center {
-          font-size: x-small;
-        }
-      }
-
       #text {
         z-index: -1;
         opacity: 0;
         transition: opacity 2s ease-in;
       }
 
+      #hint {
+        position: absolute;
+        bottom: 0;
+        z-index: -1;
+        opacity: 1;
+        transition: opacity 2s ease-out;
+        color: gray;
+        display: none;
+      }
+
       #text span {
         display: block;
       }
+
+      @media (max-width: 768px) {
+        #center {
+          font-size: x-small;
+        }
+
+        #hint {
+          display: block;
+        }
+      }
     </style>
-    <script type="module" crossorigin src="/assets/index-lOYITlRt.js"></script>
+    <script type="module" crossorigin src="/assets/index-EG5bRIYH.js"></script>
   </head>
   <body>
     <div id="custom-cursor"></div>
@@ -120,7 +134,7 @@
         <span>happy birthday, vartika</span>
         <span>from phi</span>
       </h1>
-      <h1 id="text"></h1>
+      <h1 id="hint">tap the screen and the butterflies will follow</h1>
     </div>
   </body>
 </html>
