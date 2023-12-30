@@ -240,16 +240,19 @@ init();
 
 const customCursor = document.getElementById('custom-cursor');
 
-let isCursorVisible = false;
+// Track mouse movement on desktop
+document.addEventListener('mousemove', (e) => {
+    customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+});
 
 document.addEventListener('touchstart', (e) => {
-  if (!isCursorVisible) {
-      const touch = e.touches[0];
-      customCursor.style.transform = `translate(${touch.clientX}px, ${touch.clientY}px)`;
-      customCursor.style.display = 'block';
-      isCursorVisible = true;
-  } else {
-      customCursor.style.display = 'none';
-      isCursorVisible = false;
-  }
+    const touch = e.touches[0];
+    customCursor.style.transform = `translate(${touch.clientX}px, ${touch.clientY}px)`;
+    customCursor.style.display = 'block';
 });
+
+if (isMobile) {
+    customCursor.style.display = 'block';
+}
+
+
