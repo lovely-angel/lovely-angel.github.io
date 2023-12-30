@@ -33,7 +33,8 @@ function init() {
     shuffle: shuffle
   };
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer.setClearColor(0x000000, 0);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
@@ -55,7 +56,6 @@ function init() {
 
 function initScene() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xfffffffff);
 
   camera.position.z = 75;
 
@@ -240,7 +240,6 @@ init();
 
 const customCursor = document.getElementById('custom-cursor');
 
-// Track mouse movement on desktop
 document.addEventListener('mousemove', (e) => {
     customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
 });

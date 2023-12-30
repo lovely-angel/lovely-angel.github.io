@@ -1,50 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>for my lovely angel, vartika</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>for my lovely angel, vartika</title>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
-  <link rel="manifest" href="assets/favicons/site.webmanifest">
-  <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="theme-color" content="#ffffff">
-    
-  <style>
-    html,
-    body {
-      cursor: none;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/favicons/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="assets/favicons/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
 
-    canvas {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
+    <style>
+      html,
+      body {
+        cursor: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("assets/wallpaper.jpg");
+        background-size: contain;
+      }
 
-    #custom-cursor {
+      canvas {
+        pointer-events: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      #custom-cursor {
         position: fixed;
         width: 30px;
         height: 30px;
-        background-image: url('/assets/butterfly.png'); 
+        background-image: url("/assets/butterfly.png");
         background-size: cover;
-        pointer-events: none; 
-        z-index: 9999; 
-        transform: translate(-50%, -50%); 
-    }
 
-  </style>
-</head>
-<body>
-  <div id="custom-cursor"></div>
-  <script type="module" src="main.js"></script>
-</body>
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      }
+
+      #painting {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+      }
+
+      #frame {
+        user-select: none;
+        max-width: 70vw;
+        max-height: 70vh;
+        filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 1));
+      }
+    </style>
+  </head>
+  <body>
+    <div id="custom-cursor"></div>
+  <div id="painting">
+    <img id="frame" src="assets/frame.png"></img>
+  </div>
+    <script type="module" src="main.js"></script>
+  </body>
 </html>
