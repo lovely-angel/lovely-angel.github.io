@@ -254,7 +254,13 @@ if (isMobile) {
     customCursor.style.display = 'block';
 }
 
-
 window.addEventListener('load', () => {
   document.getElementById('text').style.opacity = 1;
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  const hint = document.getElementById('hint');
+  document.addEventListener('click', function() {
+      hint.style.opacity = 0;
+  });
 });
