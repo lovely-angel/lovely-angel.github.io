@@ -255,3 +255,6 @@ if (isMobile) {
 }
 
 
+window.addEventListener('load', () => {
+  document.getElementById('text').style.opacity = 1;
+});
