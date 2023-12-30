@@ -8,6 +8,7 @@
   <style>
     html,
     body {
+      cursor: none;
       margin: 0;
       padding: 0;
       width: 100%;
@@ -21,18 +22,21 @@
       z-index: -1;
     }
 
-    #help {
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 10px;
-      width: 100%;
-      position: absolute;
-      color: #555;
-      text-align: center;
-      z-index: 0;
+    #custom-cursor {
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        background-image: url('/assets/butterfly-kRO92cNZ.png'); 
+        background-size: cover;
+        pointer-events: none; 
+        z-index: 9999; 
+        transform: translate(-50%, -50%); 
     }
+
   </style>
-  <script type="module" crossorigin src="/assets/index-jKvA-fug.js"></script>
+  <script type="module" crossorigin src="/assets/index-q7Pd5XPl.js"></script>
 </head>
 <body>
+  <div id="custom-cursor"></div>
 </body>
 </html>
