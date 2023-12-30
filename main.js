@@ -1,6 +1,15 @@
-const nbButterflies = 100;
+import * as THREE from 'three';
+import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
+import TWEEN from 'tween.js';
+import dat from 'dat.gui';
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+const nbButterflies = 40;
 var conf, scene, camera, cameraCtrl, light, renderer;
 var whw, whh;
+
+var renderer;
 
 var butterflies;
 var bodyTexture, wingTexture1, wingTexture2, wingTexture3, bodyTexture4, wingTexture4;
@@ -12,32 +21,27 @@ var mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 var mousePosition = new THREE.Vector3();
 var raycaster = new THREE.Raycaster();
 
+const attraction = isMobile ? 0.1 : 0.075;
+const velocityLimit = isMobile ? 2 : 1.4;
+
 function init() {
   conf = {
-    attraction: 0.03,
-    velocityLimit: 1.2,
+    attraction: attraction,
+    velocityLimit: 1.4,
     move: true,
     followMouse: true,
     shuffle: shuffle
   };
 
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-  cameraCtrl = new THREE.OrbitControls(camera);
-
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  initScene();
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  cameraCtrl = new OrbitControls(camera, renderer.domElement);
 
-  const gui = new dat.GUI();
-  gui.add(conf, 'move');
-  gui.add(conf, 'followMouse');
-  gui.add(conf, 'attraction', 0.01, 0.1);
-  gui.add(conf, 'velocityLimit', 0.1, 2);
-  gui.add(conf, 'shuffle');
-  gui.close();
+  initScene();
 
   onWindowResize();
   window.addEventListener('resize', onWindowResize, false);
@@ -51,17 +55,17 @@ function init() {
 
 function initScene() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene.background = new THREE.Color(0xfffffffff);
 
   camera.position.z = 75;
 
-  bodyTexture = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b1.png');
-  wingTexture1 = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b1w.png');
-  wingTexture2 = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b2w.png');
-  wingTexture3 = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b3w.png');
-  bodyTexture4 = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b4.png');
-  wingTexture4 = new THREE.TextureLoader().load('https://www.iutbayonne.univ-pau.fr/~klevron/nabpi/three/b4w.png');
-
+  bodyTexture = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b1.png');
+  wingTexture1 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b1w.png');
+  wingTexture2 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b2w.png');
+  wingTexture3 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b3w.png');
+  bodyTexture4 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b4.png');
+  wingTexture4 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b4w.png');
+  
   butterflies = [];
   for (var i = 0; i < nbButterflies; i++) {
     var b = new Butterfly();
@@ -233,3 +237,19 @@ function onMouseMove(event) {
 }
 
 init();
+
+const customCursor = document.getElementById('custom-cursor');
+
+let isCursorVisible = false;
+
+document.addEventListener('touchstart', (e) => {
+  if (!isCursorVisible) {
+      const touch = e.touches[0];
+      customCursor.style.transform = `translate(${touch.clientX}px, ${touch.clientY}px)`;
+      customCursor.style.display = 'block';
+      isCursorVisible = true;
+  } else {
+      customCursor.style.display = 'none';
+      isCursorVisible = false;
+  }
+});
