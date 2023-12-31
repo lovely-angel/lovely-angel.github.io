@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
 import TWEEN from 'tween.js';
-import dat from 'dat.gui';
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -22,7 +21,6 @@ var mousePosition = new THREE.Vector3();
 var raycaster = new THREE.Raycaster();
 
 const attraction = isMobile ? 0.1 : 0.075;
-const velocityLimit = isMobile ? 2 : 1.4;
 
 function init() {
   conf = {
@@ -58,7 +56,6 @@ function initScene() {
   scene = new THREE.Scene();
 
   camera.position.z = 75;
-
   bodyTexture = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b1.png');
   wingTexture1 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b1w.png');
   wingTexture2 = new THREE.TextureLoader().load('https://klevron.github.io/codepen/butterflies/b2w.png');
@@ -98,110 +95,111 @@ function shuffle() {
   }
 }
 
-function Butterfly() {
-  this.minWingRotation = -Math.PI / 6;
-  this.maxWingRotation = Math.PI / 2 - 0.1;
-  this.wingRotation = 0;
+class Butterfly {
+  constructor() {
+    this.minWingRotation = -Math.PI / 6;
+    this.maxWingRotation = Math.PI / 2 - 0.1;
+    this.wingRotation = 0;
 
-  this.velocity = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true));
-  this.destination = destination;
+    this.velocity = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true));
+    this.destination = destination;
 
-  var confs = [
-    { bodyTexture: bodyTexture, bodyW: 10, bodyH: 15, wingTexture: wingTexture1, wingW: 10, wingH: 15, wingX: 5.5 },
-    { bodyTexture: bodyTexture, bodyW: 6, bodyH: 9, wingTexture: wingTexture2, wingW: 15, wingH: 20, wingX: 7.5 },
-    { bodyTexture: bodyTexture, bodyW: 8, bodyH: 12, wingTexture: wingTexture3, wingW: 10, wingH: 15, wingX: 5.5 },
-	{ bodyTexture: bodyTexture4, bodyW: 6, bodyH: 10, bodyY: 2, wingTexture: wingTexture4, wingW: 15, wingH: 20, wingX: 8 },
-  ];
+    var confs = [
+      { bodyTexture: bodyTexture, bodyW: 10, bodyH: 15, wingTexture: wingTexture1, wingW: 10, wingH: 15, wingX: 5.5 },
+      { bodyTexture: bodyTexture, bodyW: 6, bodyH: 9, wingTexture: wingTexture2, wingW: 15, wingH: 20, wingX: 7.5 },
+      { bodyTexture: bodyTexture, bodyW: 8, bodyH: 12, wingTexture: wingTexture3, wingW: 10, wingH: 15, wingX: 5.5 },
+      { bodyTexture: bodyTexture4, bodyW: 6, bodyH: 10, bodyY: 2, wingTexture: wingTexture4, wingW: 15, wingH: 20, wingX: 8 },
+    ];
 
-  this.init(confs[Math.floor(rnd(4))]);
-}
-
-Butterfly.prototype.init = function (bconf) {
-  var geometry = new THREE.PlaneGeometry(bconf.wingW, bconf.wingH);
-  var material = new THREE.MeshBasicMaterial({ transparent: true, map: bconf.wingTexture, side: THREE.DoubleSide, depthTest: false });
-  var lwmesh = new THREE.Mesh(geometry, material);
-  lwmesh.position.x = -bconf.wingX;
-  this.lwing = new THREE.Object3D();
-  this.lwing.add(lwmesh);
-
-  var rwmesh = new THREE.Mesh(geometry, material);
-  rwmesh.rotation.y = Math.PI;
-  rwmesh.position.x = bconf.wingX;
-  this.rwing = new THREE.Object3D();
-  this.rwing.add(rwmesh);
-
-  geometry = new THREE.PlaneGeometry(bconf.bodyW, bconf.bodyH);
-  material = new THREE.MeshBasicMaterial({ transparent: true, map: bconf.bodyTexture, side: THREE.DoubleSide, depthTest: false });
-  this.body = new THREE.Mesh(geometry, material);
-  if (bconf.bodyY) this.body.position.y = bconf.bodyY;
-  // this.body.position.z = -0.1;
-
-  this.group = new THREE.Object3D();
-  this.group.add(this.body);
-  this.group.add(this.lwing);
-  this.group.add(this.rwing);
-  this.group.rotation.x = Math.PI / 2;
-  this.group.rotation.y = Math.PI;
-
-  this.setWingRotation(this.wingRotation);
-  this.initTween();
-
-  this.o3d = new THREE.Object3D();
-  this.o3d.add(this.group);
-};
-
-Butterfly.prototype.initTween = function () {
-  var duration = limit(conf.velocityLimit - this.velocity.length(), 0.1, 1.5) * 1000;
-  this.wingRotation = this.minWingRotation;
-  this.tweenWingRotation = new TWEEN.Tween(this)
-    .to({ wingRotation: this.maxWingRotation }, duration)
-    .repeat(1)
-    .yoyo(true)
-    // .easing(TWEEN.Easing.Cubic.InOut)
-    .onComplete(function(object) {
-      object.initTween();
-    })
-    .start();
-};
-
-Butterfly.prototype.move = function () {
-  var destination;
-  if (mouseOver && conf.followMouse) {
-    destination = mousePosition;
-  } else {
-    destination = this.destination;
+    this.init(confs[Math.floor(rnd(4))]);
   }
+  init(bconf) {
+    var geometry = new THREE.PlaneGeometry(bconf.wingW, bconf.wingH);
+    var material = new THREE.MeshBasicMaterial({ transparent: true, map: bconf.wingTexture, side: THREE.DoubleSide, depthTest: false });
+    var lwmesh = new THREE.Mesh(geometry, material);
+    lwmesh.position.x = -bconf.wingX;
+    this.lwing = new THREE.Object3D();
+    this.lwing.add(lwmesh);
 
-  var dv = destination.clone().sub(this.o3d.position).normalize();
-  this.velocity.x += conf.attraction * dv.x;
-  this.velocity.y += conf.attraction * dv.y;
-  this.velocity.z += conf.attraction * dv.z;
-  this.limitVelocity();
+    var rwmesh = new THREE.Mesh(geometry, material);
+    rwmesh.rotation.y = Math.PI;
+    rwmesh.position.x = bconf.wingX;
+    this.rwing = new THREE.Object3D();
+    this.rwing.add(rwmesh);
 
-  // update position & rotation
-  this.setWingRotation(this.wingRotation);
-  this.o3d.lookAt(this.o3d.position.clone().add(this.velocity));
-  this.o3d.position.add(this.velocity);
-};
+    geometry = new THREE.PlaneGeometry(bconf.bodyW, bconf.bodyH);
+    material = new THREE.MeshBasicMaterial({ transparent: true, map: bconf.bodyTexture, side: THREE.DoubleSide, depthTest: false });
+    this.body = new THREE.Mesh(geometry, material);
+    if (bconf.bodyY) this.body.position.y = bconf.bodyY;
+    // this.body.position.z = -0.1;
+    this.group = new THREE.Object3D();
+    this.group.add(this.body);
+    this.group.add(this.lwing);
+    this.group.add(this.rwing);
+    this.group.rotation.x = Math.PI / 2;
+    this.group.rotation.y = Math.PI;
 
-Butterfly.prototype.limitVelocity = function (y) {
-  this.velocity.x = limit(this.velocity.x, -conf.velocityLimit, conf.velocityLimit);
-  this.velocity.y = limit(this.velocity.y, -conf.velocityLimit, conf.velocityLimit);
-  this.velocity.z = limit(this.velocity.z, -conf.velocityLimit, conf.velocityLimit);
-};
+    this.setWingRotation(this.wingRotation);
+    this.initTween();
 
-Butterfly.prototype.setWingRotation = function (y) {
-  this.lwing.rotation.y = y;
-  this.rwing.rotation.y = -y;
-};
+    this.o3d = new THREE.Object3D();
+    this.o3d.add(this.group);
+  }
+  initTween() {
+    var duration = limit(conf.velocityLimit - this.velocity.length(), 0.1, 1.5) * 1000;
+    this.wingRotation = this.minWingRotation;
+    this.tweenWingRotation = new TWEEN.Tween(this)
+      .to({ wingRotation: this.maxWingRotation }, duration)
+      .repeat(1)
+      .yoyo(true)
+      // .easing(TWEEN.Easing.Cubic.InOut)
+      .onComplete(function (object) {
+        object.initTween();
+      })
+      .start();
+  }
+  move() {
+    var destination;
+    if (mouseOver && conf.followMouse) {
+      destination = mousePosition;
+    } else {
+      destination = this.destination;
+    }
 
-Butterfly.prototype.shuffle = function () {
-  this.velocity = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true));
-  var p = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true)).normalize().multiplyScalar(100);
-  this.o3d.position.set(p.x, p.y, p.z);
-  var scale = rnd(0.4) + 0.1;
-  this.o3d.scale.set(scale, scale, scale);
+    var dv = destination.clone().sub(this.o3d.position).normalize();
+    this.velocity.x += conf.attraction * dv.x;
+    this.velocity.y += conf.attraction * dv.y;
+    this.velocity.z += conf.attraction * dv.z;
+    this.limitVelocity();
+
+    // update position & rotation
+    this.setWingRotation(this.wingRotation);
+    this.o3d.lookAt(this.o3d.position.clone().add(this.velocity));
+    this.o3d.position.add(this.velocity);
+  }
+  limitVelocity(y) {
+    this.velocity.x = limit(this.velocity.x, -conf.velocityLimit, conf.velocityLimit);
+    this.velocity.y = limit(this.velocity.y, -conf.velocityLimit, conf.velocityLimit);
+    this.velocity.z = limit(this.velocity.z, -conf.velocityLimit, conf.velocityLimit);
+  }
+  setWingRotation(y) {
+    this.lwing.rotation.y = y;
+    this.rwing.rotation.y = -y;
+  }
+  shuffle() {
+    this.velocity = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true));
+    var p = new THREE.Vector3(rnd(1, true), rnd(1, true), rnd(1, true)).normalize().multiplyScalar(100);
+    this.o3d.position.set(p.x, p.y, p.z);
+    var scale = rnd(0.4) + 0.1;
+    this.o3d.scale.set(scale, scale, scale);
+  }
 }
+
+
+
+
+
+
 
 function limit(number, min, max) {
   return Math.min(Math.max(number, min), max);
