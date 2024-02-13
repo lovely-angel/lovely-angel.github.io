@@ -26,13 +26,13 @@ document.getElementById('hoverToRose').addEventListener('mouseleave', function()
 });
 
 // For mobile devices, add touch event listeners
-document.getElementById('hoverToRose').addEventListener('touchstart', function(event) {
-    // Prevent the default touch behavior (like scrolling)
-    event.preventDefault();
-    
+document.getElementById('hoverToRose').addEventListener('click', function() {
     // Apply the clip-path effect for visual change
     document.getElementById('overlayRose').style.clipPath = 'circle(75% at 50% 50%)';
     
-    // Navigate immediately on touch
+    // Clear any previous timeout to ensure we don't stack timeouts
+    clearTimeout(hoverTimeout);
+    
+    // Set a new timeout to navigate after 2 seconds
     navigateToRosePage();
 });

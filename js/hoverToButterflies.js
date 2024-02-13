@@ -26,13 +26,13 @@ document.getElementById('hoverToButterflies').addEventListener('mouseleave', fun
 });
 
 // For mobile devices, add touch event listeners
-document.getElementById('hoverToButterflies').addEventListener('touchstart', function(event) {
-    // Prevent the default touch behavior (like scrolling)
-    event.preventDefault();
-    
+document.getElementById('hoverToButterflies').addEventListener('click', function() {
     // Apply the clip-path effect for visual change
     document.getElementById('overlayButterflies').style.clipPath = 'circle(75% at 50% 50%)';
     
-    // Navigate immediately on touch
+    // Clear any previous timeout to ensure we don't stack timeouts
+    clearTimeout(hoverTimeout);
+    
+    // Set a new timeout to navigate after 2 seconds
     navigateToButterfliesPage();
 });
