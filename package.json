@@ -1,0 +1,21 @@
+{
+  "name": "lovely-angel",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "homepage": "lovely-angels.github.io",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "gh-pages": "^6.1.1",
+    "three": "^0.160.0",
+    "tween.js": "^16.6.0"
+  }
+}

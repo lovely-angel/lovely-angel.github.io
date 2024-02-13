@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>for vartika, my lovely angel</title>
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="../assets/favicons/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <style>
+      @font-face {
+        font-family: "Allura";
+        src: url("../assets/fonts/Allura-Regular.woff2") format("woff2"),
+          url("..//assets/fonts/Allura-Regular.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      html,
+      body {
+        cursor: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("../assets/wallpaper.jpg");
+        background-size: contain;
+        font-family: "Allura", cursive;
+      }
+
+      canvas {
+        pointer-events: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        filter: drop-shadow(0 40px 20px rgba(0, 0, 0, 0.4));
+      }
+
+      #custom-cursor {
+        pointer-events: none;
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        background-image: url("../assets/butterfly.png");
+        background-size: cover;
+
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        filter: drop-shadow(0 20px 5px rgba(0, 0, 0, 0.6));
+      }
+
+      #center {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        text-align: center;
+        font-size: larger;
+      }
+
+      #text {
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 2s ease-in;
+      }
+
+      #hint {
+        position: absolute;
+        bottom: 15%;
+        z-index: -1;
+        opacity: 1;
+        transition: opacity 2s ease-out;
+        color: gray;
+        display: none;
+      }
+
+      #text span {
+        display: block;
+        user-select: none;
+      }
+
+      #hoverToHome {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        cursor: none;
+        z-index: 3;
+        background-image: url("../assets/butterfly.png");
+        background-size: cover;
+        background-position: center;
+        height: 100px;
+        width: 100px;
+      }
+
+      #overlayHome {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("../assets/butterfly_royal.png");
+        background-size: cover;
+        background-position: center;
+        clip-path: circle(0% at 50% 50%);
+        transition: clip-path 2s ease;
+        pointer-events: none;
+      }
+
+      @media (max-width: 768px) {
+        #center {
+          font-size: x-small;
+        }
+
+        #hint {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hoverToHome">
+      <div id="overlayHome"></div>
+    </div>
+    <div id="custom-cursor"></div>
+    <div id="center">
+      <h1 id="text">
+        <span>“I long for you;</span>
+        <span>I who usually long without longing, </span>
+        <span> as though I am unconscious </span>
+        <span>and absorbed in neutrality and apathy,</span>
+        <span>really, utterly long for every bit of you."</span>
+        <span>-franz kafka</span>
+        <br />
+        <span>i will find you in every lifetime</span>
+        <span>happy birthday, vartika</span>
+        <span>from phi</span>
+      </h1>
+      <h1 id="hint">tap the screen and the butterflies will follow</h1>
+    </div>
+    <script type="module" src="../js/butterflies.js"></script>
+    <script type="module" src="../js/hoverToHome.js"></script>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>digital roses never die</title>
+    <style>
+      @font-face {
+        font-family: "Allura";
+        src: url("../assets/fonts/Allura-Regular.woff2") format("woff2"),
+          url("../assets/fonts/Allura-Regular.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+      #modelViewer {
+        height: 100vh;
+        width: 100vw;
+      }
+      #hoverToHome {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        cursor: progress;
+        z-index: 3;
+        background-image: url("../assets/rose.png");
+        background-size: cover;
+        background-position: center;
+        height: 100px;
+        width: 100px;
+      }
+
+      #overlayHome {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("../assets/rose_royal.png");
+        background-size: cover;
+        background-position: center;
+        clip-path: circle(0% at 50% 50%);
+        transition: clip-path 2s ease;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hoverToHome">
+      <div id="overlayHome"></div>
+    </div>
+    <div id="modelViewer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+
+    <script>
+      // Initialization
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById("modelViewer").appendChild(renderer.domElement);
+
+      // Add a simple light
+      const ambientLight = new THREE.AmbientLight(0x831739);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xa93d5f, 1);
+      directionalLight.position.set(1, 1, 1).normalize();
+      scene.add(directionalLight);
+
+      // Camera position
+      camera.position.set(0, 0, 1);
+
+      // OrbitControls for mouse interaction
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+
+      function createTextTexture(message, fontsize, textColor) {
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        context.font = fontsize + "px Allura";
+
+        // Measure text and adjust canvas size
+        var metrics = context.measureText(message);
+        var textWidth = metrics.width;
+        canvas.width = textWidth + 20; // Add some padding
+        canvas.height = fontsize + 20; // Height based on fontsize and some padding
+
+        // Need to set font again after resizing canvas
+        context.font = fontsize + "px Allura";
+        context.fillStyle = textColor;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(message, canvas.width / 2, canvas.height / 2);
+
+        var texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+      }
+
+      function createTextSprite(message, position) {
+        var texture = createTextTexture(message, "24", "white");
+        var material = new THREE.SpriteMaterial({ map: texture });
+        var sprite = new THREE.Sprite(material);
+        sprite.position.set(position.x, position.y, position.z);
+        sprite.scale.set(1, 10, 10); // Scale the sprite as needed
+        scene.add(sprite);
+      }
+
+      document.fonts.load('10pt "Allura"').then(function () {
+        // Your font is now loaded
+        // Place the code to create text sprites here to ensure it runs after the font has loaded
+        createTextSprite(
+          "digital roses never die",
+          new THREE.Vector3(0, 0.5, 0.25)
+        );
+        createTextSprite(
+          "i love you, vartika",
+          new THREE.Vector3(0, 0.35, 0.25)
+        );
+      });
+      const textureLoader = new THREE.TextureLoader();
+
+      // Load your environment map
+      textureLoader.load("../assets/skybox.webp", function (texture) {
+        // Assuming you're using a single image for simplicity
+        // For a more complex or realistic approach, consider using CubeTextureLoader or processing the image to fit a cube map
+
+        texture.mapping = THREE.EquirectangularReflectionMapping; // Use this if your image is equirectangular
+        // texture.mapping = THREE.SphericalReflectionMapping; // Alternative mapping types depending on your image
+
+        scene.background = texture;
+
+        // Apply the loaded texture as an environment map
+        const material = new THREE.MeshPhongMaterial({
+          color: 0x831739,
+          specular: 0x111111,
+          shininess: 200,
+          envMap: texture, // Apply the environment map here
+        });
+
+        const loader = new THREE.STLLoader();
+
+        loader.load("../assets/Rose.stl", function (geometry) {
+          const mesh = new THREE.Mesh(geometry, material);
+          scene.add(mesh);
+        });
+      });
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // required if controls.enableDamping or controls.autoRotate are set to true
+        controls.update();
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Handle window resize
+      window.addEventListener(
+        "resize",
+        function () {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        },
+        false
+      );
+    </script>
+    <script type="module" src="../js/hoverToHome.js"></script>
+  </body>
+</html>
