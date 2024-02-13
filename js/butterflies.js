@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
-import TWEEN from 'tween.js';
+import TWEEN from '@tweenjs/tween.js';
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 

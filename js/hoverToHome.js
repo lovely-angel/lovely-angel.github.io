@@ -3,7 +3,7 @@ var hoverTimeout;
 
 // Function to handle the navigation action
 function navigateToIndex() {
-    window.location.href = 'index.html'; // Navigation action
+    window.location.href = '/index.html'; // Navigation action
 }
 
 document.getElementById('hoverToHome').addEventListener('mouseenter', function() {
