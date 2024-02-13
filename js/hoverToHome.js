@@ -26,13 +26,13 @@ document.getElementById('hoverToHome').addEventListener('mouseleave', function()
 });
 
 // For mobile devices, add touch event listeners
-document.getElementById('hoverToHome').addEventListener('touchstart', function(event) {
-    // Prevent the default touch behavior (like scrolling)
-    event.preventDefault();
-    
+document.getElementById('hoverToHome').addEventListener('click', function() {
     // Apply the clip-path effect for visual change
     document.getElementById('overlayHome').style.clipPath = 'circle(75% at 50% 50%)';
     
-    // Navigate immediately on touch
+    // Clear any previous timeout to ensure we don't stack timeouts
+    clearTimeout(hoverTimeout);
+    
+    // Set a new timeout to navigate after 2 seconds
     navigateToIndex();
 });
