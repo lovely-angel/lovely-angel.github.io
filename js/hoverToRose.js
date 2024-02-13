@@ -1,6 +1,11 @@
 // Define hoverTimeout outside the event listeners for global access
 var hoverTimeout;
 
+// Function to handle the navigation action
+function navigateToRosePage() {
+    window.location.href = '/pages/rose.html'; // Navigation action
+}
+
 document.getElementById('hoverToRose').addEventListener('mouseenter', function() {
     // Apply the clip-path effect for visual change
     document.getElementById('overlayRose').style.clipPath = 'circle(75% at 50% 50%)';
@@ -9,9 +14,7 @@ document.getElementById('hoverToRose').addEventListener('mouseenter', function()
     clearTimeout(hoverTimeout);
     
     // Set a new timeout to navigate after 2 seconds
-    hoverTimeout = setTimeout(function() {
-        window.location.href = '/pages/rose.html'; // Navigation action
-    }, 1500);
+    hoverTimeout = setTimeout(navigateToRosePage, 1500);
 });
 
 document.getElementById('hoverToRose').addEventListener('mouseleave', function() {
@@ -20,4 +23,16 @@ document.getElementById('hoverToRose').addEventListener('mouseleave', function()
     
     // Clear the navigation timeout if hover ends before the timeout completes
     clearTimeout(hoverTimeout);
+});
+
+// For mobile devices, add touch event listeners
+document.getElementById('hoverToRose').addEventListener('touchstart', function(event) {
+    // Prevent the default touch behavior (like scrolling)
+    event.preventDefault();
+    
+    // Apply the clip-path effect for visual change
+    document.getElementById('overlayRose').style.clipPath = 'circle(75% at 50% 50%)';
+    
+    // Navigate immediately on touch
+    navigateToRosePage();
 });

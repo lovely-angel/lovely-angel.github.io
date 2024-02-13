@@ -1,6 +1,11 @@
 // Define hoverTimeout outside the event listeners for global access
 var hoverTimeout;
 
+// Function to handle the navigation action
+function navigateToIndex() {
+    window.location.href = 'index.html'; // Navigation action
+}
+
 document.getElementById('hoverToHome').addEventListener('mouseenter', function() {
     // Apply the clip-path effect for visual change
     document.getElementById('overlayHome').style.clipPath = 'circle(75% at 50% 50%)';
@@ -9,9 +14,7 @@ document.getElementById('hoverToHome').addEventListener('mouseenter', function()
     clearTimeout(hoverTimeout);
     
     // Set a new timeout to navigate after 2 seconds
-    hoverTimeout = setTimeout(function() {
-        window.location.href = 'index.html'; // Navigation action
-    }, 1500);
+    hoverTimeout = setTimeout(navigateToIndex, 1500);
 });
 
 document.getElementById('hoverToHome').addEventListener('mouseleave', function() {
@@ -20,4 +23,16 @@ document.getElementById('hoverToHome').addEventListener('mouseleave', function()
     
     // Clear the navigation timeout if hover ends before the timeout completes
     clearTimeout(hoverTimeout);
+});
+
+// For mobile devices, add touch event listeners
+document.getElementById('hoverToHome').addEventListener('touchstart', function(event) {
+    // Prevent the default touch behavior (like scrolling)
+    event.preventDefault();
+    
+    // Apply the clip-path effect for visual change
+    document.getElementById('overlayHome').style.clipPath = 'circle(75% at 50% 50%)';
+    
+    // Navigate immediately on touch
+    navigateToIndex();
 });
